@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>niki</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>angel net from niki</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     html, body {
       height: 100%;
@@ -13,32 +13,73 @@
     }
     body {
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       background: #fff;
       font-family: Arial, Helvetica, sans-serif;
       position: relative;
       overflow: hidden;
     }
-    body::before {
-      content: "";
-      position: absolute;
+    #ascii-overlay {
+      position: fixed;
+      z-index: 9999;
       inset: 0;
-      background-image: radial-gradient(#ddd 1px, transparent 1px);
-      background-size: 24px 24px;
-      pointer-events: none;
-      z-index: 0;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 2s;
+      opacity: 1;
+      pointer-events: auto;
     }
-    .container {
-      position: relative;
+    #ascii-overlay.hide {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 2s;
+    }
+    #ascii-art {
+      font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', 'monospace';
+      font-size: 1.5rem;
+      color: #333;
+      white-space: pre;
+      text-align: center;
+      line-height: 1.1;
+      padding: 24px 12px;
+      border-radius: 10px;
+      background: #fff;
+      max-width: 90vw;
+      max-height: 90vh;
+      overflow: auto;
+      user-select: none;
+    }
+    .container, .contact-container, .buy-container {
+      opacity: 0;
+      transition: opacity 2s;
+      position: absolute;
       z-index: 1;
       width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 60px;
+      margin: 0 auto;
+      background: transparent;
+    }
+    .container.visible, .contact-container.visible, .buy-container.visible {
+      opacity: 1;
+      transition: opacity 2s;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle at 2px 2px, #ccc 1px, transparent 0);
+      background-repeat: repeat;
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
     }
     .title {
       text-align: center;
@@ -46,17 +87,41 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
     }
-    .title img {
-      display: block;
+    .image-wrap {
+      position: relative;
+      width: 110px;
+      height: 110px;
       margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .main-img {
+      display: block;
       width: 90px;
       height: 90px;
       object-fit: contain;
-      border-radius: 50%;
+      border-radius: 0;
       box-shadow: 0 2px 12px rgba(0,0,0,0.07);
       background: #fff;
+      z-index: 2;
+      position: relative;
     }
+    .heart-decor {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      opacity: 0.9;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .heart1 { top: -15px; left: -20px; transform: rotate(-15deg);}
+    .heart2 { top: 10px; right: -18px; transform: rotate(10deg);}
+    .heart3 { bottom: -14px; left: 10px; transform: rotate(-10deg);}
+    .heart4 { bottom: -10px; right: -15px; transform: rotate(12deg);}
+    .heart5 { top: -25px; left: 50%; transform: translateX(-50%) rotate(5deg); opacity: 0.75;}
     .title h1 {
       font-size: 2.5rem;
       font-weight: 700;
@@ -82,40 +147,196 @@
       font-weight: 700;
       letter-spacing: 0.5px;
       transition: color 0.2s;
+      cursor: pointer;
     }
     .menu a:hover {
       color: #888;
+    }
+    /* Contact and Buy page styling */
+    .contact-title, .buy-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+      color: #111;
+      text-align: center;
+    }
+    .contact-msg, .buy-msg {
+      font-size: 1.3rem;
+      color: #444;
+      background: rgba(255,255,255,0.9);
+      padding: 20px 36px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+      max-width: 90vw;
+    }
+    .buy-more {
+      font-size: 1.1rem;
+      color: #888;
+      margin-top: 18px;
+      text-align: center;
+    }
+    .back-link {
+      margin-top: 40px;
+      font-size: 1.1rem;
+      color: #888;
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
     }
     @media (max-width: 600px) {
       .menu a {
         font-size: 1.3rem;
       }
-      .container {
+      .container, .contact-container, .buy-container {
         gap: 30px;
       }
-      .title h1 {
+      .title h1, .contact-title, .buy-title {
         font-size: 1.3rem;
       }
-      .title img {
-        width: 60px;
-        height: 60px;
+      .image-wrap {
+        width: 70px;
+        height: 70px;
         margin-bottom: 14px;
+      }
+      .main-img {
+        width: 50px;
+        height: 50px;
+      }
+      .heart-decor {
+        width: 16px;
+        height: 16px;
+      }
+      .heart1 { top: -10px; left: -12px; }
+      .heart2 { top: 6px; right: -10px; }
+      .heart3 { bottom: -10px; left: 8px; }
+      .heart4 { bottom: -8px; right: -10px; }
+      .heart5 { top: -15px; }
+      .contact-msg, .buy-msg {
+        font-size: 1rem;
+        padding: 12px 8px;
+      }
+      .buy-more {
+        font-size: 0.95rem;
       }
     }
   </style>
 </head>
 <body>
+  <!-- ASCII overlay -->
+  <div id="ascii-overlay">
+    <pre id="ascii-art">
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣆⠈⠳⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠴⠒⢲
+⠘⢦⡀⠀⠙⠲⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠖⠉⠀⢀⡴⠋
+⠀⢻⣍⠲⢄⡐⠤⣉⠓⠦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠴⠚⣁⠀⠀⣀⡴⠟⣪⠇
+⠠⡤⠽⢦⣀⠈⠑⠢⢍⣒⠤⣉⡒⠤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠴⠚⣉⠤⢒⣩⠴⠒⠉⢁⡠⣚⢥⠀
+⠀⠙⢶⡀⠈⠙⠒⠤⣐⡪⠭⣒⡘⢍⡁⢍⣒⠢⢄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣖⠪⠭⠈⣉⠽⣐⠮⢕⣊⡤⠤⠒⠋⢉⡤⠊⠀
+⠀⠀⠰⡛⠓⠢⢤⣀⡀⠬⢝⣒⡪⢏⡈⠝⣒⡨⣿⢿⡑⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠏⡰⢅⣖⡲⠾⠍⣩⢯⣒⣋⠥⢤⣒⠠⠤⠐⢛⡶⠂⠀
+⠀⠀⠀⠈⣒⠤⢄⣀⡈⠍⣒⡒⠠⠵⣏⠙⠒⢺⣅⢿⡍⠀⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡏⠀⣹⢥⡗⠶⠌⣉⠯⠔⣒⣊⠩⠁⠀⣀⣠⣖⣏⠀⠀⠀
+⠀⠀⠀⠀⠑⢤⡀⠀⠈⠉⠒⠒⠫⠭⢼⣛⠒⠒⡧⣽⣏⡀⢸⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠁⣈⣷⡲⡏⠉⣙⡯⠭⠥⠒⠒⠊⠉⠉⠀⢀⡴⠃⠀⠀⠀
+⠀⠀⠀⠀⠀⠠⡌⠙⠒⠊⠬⠭⠥⠤⠰⣞⡉⠉⣟⡵⣯⣠⠀⠑⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠚⡁⢠⡾⣟⣍⡎⠭⢖⣏⣉⡥⠤⠤⠤⠤⠴⠭⡅⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠙⠲⠤⢀⡀⠀⠀⠀⠴⠦⢍⡉⢿⡜⡽⢸⢾⣦⣤⠉⡕⢲⣒⡆⠀⠀⠀⠀⠀⠀⡖⣺⠻⣏⣰⣄⣿⣟⡼⡿⣾⣞⣉⠿⠭⢐⣀⣀⣀⣀⣤⡴⠚⠁⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠰⢏⣉⠉⠀⣀⣠⢴⠖⠽⡴⣞⢿⣇⣎⠋⡇⢫⢻⡱⣞⣿⡤⡄⠀⠀⠀⠀⡼⣽⣟⡟⢿⢛⣎⡏⣾⢮⣟⣽⡷⡛⠧⢖⣒⣂⢀⣀⣀⠴⠃⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⢀⠖⠁⡴⢋⡤⡳⢻⢀⢿⢹⢹⢞⢳⢏⣯⣹⠳⡷⡀⠀⢀⣜⡗⣏⣹⡏⢻⣯⣻⢹⢱⣟⢼⢻⣳⡌⠑⠄⠑⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣀⠤⢒⣟⠜⢁⡎⡝⡸⡶⢻⢳⢯⣢⠻⡝⡌⢮⠿⠀⢸⣪⡎⡰⣫⢷⣻⢳⢻⠒⡿⡝⡍⣆⠱⠜⣶⠤⠄⡸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣊⠴⠻⠜⢠⡇⠃⢸⡸⠀⣧⠃⢸⢆⡼⠀⠀⠀⠘⠦⢞⡇⢪⠇⠘⣸⠀⡗⣧⢳⢸⠙⠦⠼⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢫⣠⠋⡇⢠⠎⢧⢂⡜⠢⠎⠀⠀⠀⠀⠀⠀⠀⠈⠧⠾⡄⣠⠋⢧⣠⠎⠣⡼⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠙⠉⠀⠈⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀
+    </pre>
+  </div>
+  <!-- Main content -->
   <div class="container">
     <div class="title">
-      <img src="https://cdn.jsdelivr.net/gh/itspi3141/discord-fake-avatar-decorations@main/public/decorations/angel.png" alt="angel net logo" />
+      <div class="image-wrap">
+        <img class="main-img" src="https://cdn.jsdelivr.net/gh/itspi3141/discord-fake-avatar-decorations@main/public/decorations/angel.png" alt="angel net logo" />
+        <img class="heart-decor heart1" src="https://i.imgur.com/iUacJBc.png" alt="heart decoration" />
+        <img class="heart-decor heart2" src="https://i.imgur.com/iUacJBc.png" alt="heart decoration" />
+        <img class="heart-decor heart3" src="https://i.imgur.com/iUacJBc.png" alt="heart decoration" />
+        <img class="heart-decor heart4" src="https://i.imgur.com/iUacJBc.png" alt="heart decoration" />
+        <img class="heart-decor heart5" src="https://i.imgur.com/iUacJBc.png" alt="heart decoration" />
+      </div>
       <h1>angel net</h1>
       <p>from niki</p>
     </div>
     <div class="menu">
-      <a href="https://discord.gg/rockk" target="_blank" rel="noopener noreferrer">servers</a>
-      <a href="#">contact</a>
-      <a href="#">buy</a>
+      <a href="https://discord.gg/bus" target="_blank" rel="noopener noreferrer">servers</a>
+      <a href="#" id="contact-link">contact</a>
+      <a href="#" id="buy-link">buy</a>
     </div>
   </div>
+  <!-- Contact page -->
+  <div class="contact-container" style="display:none;">
+    <div class="contact-title">contact</div>
+    <div class="contact-msg">
+      in case of term, check back here or check my gateway for new user/server
+    </div>
+    <button class="back-link" id="back-link-contact">← back</button>
+  </div>
+  <!-- Buy page -->
+  <div class="buy-container" style="display:none;">
+    <div class="buy-title">buy</div>
+    <div class="buy-msg">
+      selling /bus van, selling 1.5k server
+      <div class="buy-more">more soon</div>
+    </div>
+    <button class="back-link" id="back-link-buy">← back</button>
+  </div>
+  <script>
+    // ASCII overlay fade
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.getElementById('ascii-overlay').classList.add('hide');
+        document.querySelector('.container').classList.add('visible');
+      }, 5000);
+    });
+
+    // SPA-style navigation for contact and buy
+    const mainContainer = document.querySelector('.container');
+    const contactContainer = document.querySelector('.contact-container');
+    const buyContainer = document.querySelector('.buy-container');
+
+    // Contact
+    document.getElementById('contact-link').addEventListener('click', function(e) {
+      e.preventDefault();
+      mainContainer.classList.remove('visible');
+      setTimeout(() => {
+        mainContainer.style.display = 'none';
+        contactContainer.style.display = 'flex';
+        setTimeout(() => contactContainer.classList.add('visible'), 20);
+      }, 400);
+    });
+    document.getElementById('back-link-contact').addEventListener('click', function() {
+      contactContainer.classList.remove('visible');
+      setTimeout(() => {
+        contactContainer.style.display = 'none';
+        mainContainer.style.display = 'flex';
+        setTimeout(() => mainContainer.classList.add('visible'), 20);
+      }, 400);
+    });
+
+    // Buy
+    document.getElementById('buy-link').addEventListener('click', function(e) {
+      e.preventDefault();
+      mainContainer.classList.remove('visible');
+      setTimeout(() => {
+        mainContainer.style.display = 'none';
+        buyContainer.style.display = 'flex';
+        setTimeout(() => buyContainer.classList.add('visible'), 20);
+      }, 400);
+    });
+    document.getElementById('back-link-buy').addEventListener('click', function() {
+      buyContainer.classList.remove('visible');
+      setTimeout(() => {
+        buyContainer.style.display = 'none';
+        mainContainer.style.display = 'flex';
+        setTimeout(() => mainContainer.classList.add('visible'), 20);
+      }, 400);
+    });
+  </script>
 </body>
 </html>
