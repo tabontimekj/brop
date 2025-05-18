@@ -5,12 +5,7 @@
   <title>angel net from niki</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    html, body { height: 100%; margin: 0; padding: 0; box-sizing: border-box; }
     body {
       min-height: 100vh;
       background: #fff;
@@ -152,7 +147,6 @@
     .menu a:hover {
       color: #888;
     }
-    /* Contact and Buy page styling */
     .contact-title, .buy-title {
       font-size: 2.2rem;
       font-weight: 700;
@@ -223,6 +217,9 @@
         font-size: 0.95rem;
       }
     }
+    #bg-music {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -264,7 +261,7 @@
       <p>from niki</p>
     </div>
     <div class="menu">
-      <a href="https://discord.gg/bus" target="_blank" rel="noopener noreferrer">servers</a>
+      <a href="https://discord.gg/rockk" target="_blank" rel="noopener noreferrer">servers</a>
       <a href="#" id="contact-link">contact</a>
       <a href="#" id="buy-link">buy</a>
     </div>
@@ -286,12 +283,23 @@
     </div>
     <button class="back-link" id="back-link-buy">← back</button>
   </div>
+  <!-- Audio player (hidden) -->
+  <audio id="bg-music" loop>
+    <source src="https://github.com/tabontimekj/wqaeqweqwe/raw/main/Proderics%20-%20Strangers%20ft.%20melodybloom.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
   <script>
     // ASCII overlay fade
     window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         document.getElementById('ascii-overlay').classList.add('hide');
         document.querySelector('.container').classList.add('visible');
+        // Try to play music after overlay
+        const audio = document.getElementById('bg-music');
+        if (audio) {
+          audio.volume = 0.4;
+          audio.play().catch(()=>{});
+        }
       }, 5000);
     });
 
