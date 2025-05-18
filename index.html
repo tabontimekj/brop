@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>niki</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      position: relative;
+      overflow: hidden;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(#ddd 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+    }
+    .title {
+      text-align: center;
+      margin-bottom: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .title img {
+      display: block;
+      margin-bottom: 24px;
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      border-radius: 50%;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      background: #fff;
+    }
+    .title h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+    .title p {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #444;
+      font-weight: 400;
+    }
+    .menu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 50px;
+    }
+    .menu a {
+      color: #111;
+      text-decoration: none;
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    .menu a:hover {
+      color: #888;
+    }
+    @media (max-width: 600px) {
+      .menu a {
+        font-size: 1.3rem;
+      }
+      .container {
+        gap: 30px;
+      }
+      .title h1 {
+        font-size: 1.3rem;
+      }
+      .title img {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">
+      <img src="https://cdn.jsdelivr.net/gh/itspi3141/discord-fake-avatar-decorations@main/public/decorations/angel.png" alt="angel net logo" />
+      <h1>angel net</h1>
+      <p>from niki</p>
+    </div>
+    <div class="menu">
+      <a href="https://discord.gg/rockk" target="_blank" rel="noopener noreferrer">servers</a>
+      <a href="#">contact</a>
+      <a href="#">buy</a>
+    </div>
+  </div>
+</body>
+</html>
